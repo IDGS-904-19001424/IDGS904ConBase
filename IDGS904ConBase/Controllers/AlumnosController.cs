@@ -56,29 +56,45 @@ namespace IDGS904ConBase.Controllers
         // GET: Alumnos/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            using (var dbAlumno = new AlumnoContext())
+            {
+                
+                var alumno = dbAlumno.Alumnos.Where(x => x.Id == id).FirstOrDefault();
+                return View(alumno);
+            }
         }
 
         // POST: Alumnos/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Alumno alumno) 
         {
             try
             {
-                // TODO: Add update logic here
+                using (var dbAlumno = new AlumnoContext())
+                {
+                    
+                    dbAlumno.Entry(alumno).State = System.Data.Entity.EntityState.Modified;
+                    dbAlumno.SaveChanges();
+                }
 
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+               
+                return View(alumno);
             }
         }
 
         // GET: Alumnos/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            using (var dbAlumno = new AlumnoContext())
+            {
+                
+                var alumno = dbAlumno.Alumnos.Where(x => x.Id == id).FirstOrDefault();
+                return View(alumno);
+            }
         }
 
         // POST: Alumnos/Delete/5
@@ -87,7 +103,18 @@ namespace IDGS904ConBase.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                using (var dbAlumno = new AlumnoContext())
+                {
+                    
+                    var alumno = dbAlumno.Alumnos.Where(x => x.Id == id).FirstOrDefault();
+
+                    if (alumno != null)
+                    {
+                    
+                        dbAlumno.Alumnos.Remove(alumno);
+                        dbAlumno.SaveChanges();
+                    }
+                }
 
                 return RedirectToAction("Index");
             }
